@@ -27,7 +27,7 @@ namespace CarMechanic
         {
             UsersListBox.ItemsSource = _context.Users.Include(u => u.Cars).ToList();
             CarsListBox.ItemsSource = _context.Cars.Include(c => c.User).ToList();
-            RepairsListBox.ItemsSource = _context.Repairs.Include(r => r.Car).ThenInclude(c => c.User).Include(r => r.Parts).ToList();
+            RepairsListBox.ItemsSource = _context.Repairs.Include(r => r.Car).Include(r => r.Parts).ToList();
             PartsListBox.ItemsSource = _context.Parts.ToList();
         }
 
@@ -164,6 +164,7 @@ namespace CarMechanic
                 if (repairForm.ShowDialog() == true)
                 {
                     var repair = repairForm.Repair;
+
                     if (repair.Car != null)
                     {
                         var existingCar = _context.Cars.Find(repair.Car.Id);
@@ -177,6 +178,29 @@ namespace CarMechanic
                             _context.Cars.Attach(repair.Car);
                         }
                     }
+
+                    // Odłączenie istniejących części
+                    foreach (var part in repair.Parts)
+                    {
+                        _context.Entry(part).State = EntityState.Detached;
+                    }
+
+                    // Dodanie nowych części
+                    repair.Parts.Clear();
+                    foreach (var part in repairForm.Repair.Parts)
+                    {
+                        var existingPart = _context.Parts.Find(part.Id);
+                        if (existingPart != null)
+                        {
+                            repair.Parts.Add(existingPart);
+                        }
+                        else
+                        {
+                            _context.Parts.Attach(part);
+                            repair.Parts.Add(part);
+                        }
+                    }
+
                     _context.Entry(repair).State = EntityState.Modified;
                     _context.SaveChanges();
                     LoadData();

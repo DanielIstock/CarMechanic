@@ -1,5 +1,8 @@
-﻿using System.Windows;
+﻿using System;
+using System.Linq;
+using System.Windows;
 using CarMechanic.Models;
+using CarMechanic.Data;
 
 namespace CarMechanic.RepairForm
 {
@@ -7,24 +10,47 @@ namespace CarMechanic.RepairForm
     {
         public Repair Repair { get; private set; }
 
+        private readonly AppDbContext _context;
+
         public RepairForm(Repair repair)
         {
             InitializeComponent();
+            _context = new AppDbContext();
             Repair = repair;
             DataContext = Repair;
-            PartsListBox.ItemsSource = Repair.Parts;
+
+            CarComboBox.ItemsSource = _context.Cars.ToList();
+            PartsListBox.ItemsSource = _context.Parts.ToList();
+
+            CarComboBox.SelectedItem = Repair.Car;
+
+            foreach (var part in Repair.Parts)
+            {
+                PartsListBox.SelectedItems.Add(part);
+            }
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            Repair.Description = DescriptionTextBox.Text;
-            Repair.Date = RepairDatePicker.SelectedDate ?? DateTime.Now;
+            if (CarComboBox.SelectedItem is Car selectedCar)
+            {
+                Repair.Car = selectedCar;
+            }
+
+            Repair.Parts.Clear();
+            foreach (var part in PartsListBox.SelectedItems)
+            {
+                Repair.Parts.Add((Part)part);
+            }
+
             DialogResult = true;
+            Close();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
+            Close();
         }
     }
 }
