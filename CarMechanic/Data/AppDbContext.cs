@@ -14,7 +14,7 @@ namespace CarMechanic.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=carmechanic.db");
+            optionsBuilder.UseSqlite("Data Source=CarMechanicDatabase.db");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -41,7 +41,8 @@ namespace CarMechanic.Data
         {
             Console.WriteLine("Checking if seeding is needed...");
 
-        
+            if (!Users.Any())
+            {
                 Console.WriteLine("Seeding database...");
 
                 var user1 = new User { Name = "John Doe", Email = "john.doe@example.com" };
@@ -83,7 +84,10 @@ namespace CarMechanic.Data
                 SaveChanges();
                 Console.WriteLine("Database seeded successfully.");
             }
-       
+            else
+            {
+                Console.WriteLine("Database already seeded.");
+            }
         }
-   }
-
+    }
+}
