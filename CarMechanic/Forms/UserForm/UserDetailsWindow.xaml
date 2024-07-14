@@ -1,0 +1,15 @@
+<Window x:Class="CarMechanic.UserForm.UserDetailsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="User Details" Height="300" Width="400">
+    <Grid>
+        <StackPanel Margin="10">
+            <Label Content="Name"/>
+            <TextBlock Text="{Binding User.Name}"/>
+            <Label Content="Email"/>
+            <TextBlock Text="{Binding User.Email}"/>
+            <Label Content="Cars"/>
+            <ListBox ItemsSource="{Binding User.Cars}" DisplayMemberPath="Model" Height="100"/>
+        </StackPanel>
+    </Grid>
+</Window>

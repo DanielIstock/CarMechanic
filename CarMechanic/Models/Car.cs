@@ -12,7 +12,7 @@ namespace CarMechanic.Models
         public string Model { get; set; }
         public string LicensePlate { get; set; }
         public int UserId { get; set; }
-        public User User { get; set; }
-        public ICollection<Repair> Repairs { get; set; }
+        public User? User { get; set; }
+        public ICollection<Repair>? Repairs { get; set; }
     }
 }

@@ -1,0 +1,15 @@
+<Window x:Class="CarMechanic.PartForm.PartDetailsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Part Details" Height="300" Width="400">
+    <Grid>
+        <StackPanel Margin="10">
+            <Label Content="Name"/>
+            <TextBlock Text="{Binding Part.Name}"/>
+            <Label Content="Price"/>
+            <TextBlock Text="{Binding Part.Price}"/>
+            <Label Content="Repair"/>
+            <TextBlock Text="{Binding Part.Repair.Description}"/>
+        </StackPanel>
+    </Grid>
+</Window>
