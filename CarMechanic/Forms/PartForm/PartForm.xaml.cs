@@ -5,7 +5,7 @@ namespace CarMechanic.PartForm
 {
     public partial class PartForm : Window
     {
-        public Part Part { get; private set; }
+        public Part Part { get; set; }
 
         public PartForm(Part part)
         {
@@ -19,11 +19,6 @@ namespace CarMechanic.PartForm
             Part.Name = NameTextBox.Text;
             Part.Price = decimal.Parse(PriceTextBox.Text);
             DialogResult = true;
-        }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = false;
         }
     }
 }

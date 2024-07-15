@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Windows;
+using System.Collections.ObjectModel;
 using Microsoft.EntityFrameworkCore;
 using CarMechanic.Data;
 using CarMechanic.Models;
@@ -25,10 +26,10 @@ namespace CarMechanic
 
         private void LoadData()
         {
-            UsersListBox.ItemsSource = _context.Users.Include(u => u.Cars).ToList();
-            CarsListBox.ItemsSource = _context.Cars.Include(c => c.User).ToList();
-            RepairsListBox.ItemsSource = _context.Repairs.Include(r => r.Car).Include(r => r.Parts).ToList();
-            PartsListBox.ItemsSource = _context.Parts.ToList();
+            UsersListBox.ItemsSource = new ObservableCollection<User>(_context.Users.Include(u => u.Cars).ToList());
+            CarsListBox.ItemsSource = new ObservableCollection<Car>(_context.Cars.Include(c => c.User).ToList());
+            RepairsListBox.ItemsSource = new ObservableCollection<Repair>(_context.Repairs.Include(r => r.Car).ToList());
+            PartsListBox.ItemsSource = new ObservableCollection<Part>(_context.Parts.ToList());
         }
 
         private void AddUser_Click(object sender, RoutedEventArgs e)
@@ -70,7 +71,7 @@ namespace CarMechanic
 
         private void AddCar_Click(object sender, RoutedEventArgs e)
         {
-            var carForm = new CarForm.CarForm(new Car());
+            var carForm = new CarForm.CarForm(new Car(), new ObservableCollection<User>(_context.Users.ToList()));
             if (carForm.ShowDialog() == true)
             {
                 var car = carForm.Car;
@@ -97,7 +98,7 @@ namespace CarMechanic
         {
             if (CarsListBox.SelectedItem is Car selectedCar)
             {
-                var carForm = new CarForm.CarForm(selectedCar);
+                var carForm = new CarForm.CarForm(selectedCar, new ObservableCollection<User>(_context.Users.ToList()));
                 if (carForm.ShowDialog() == true)
                 {
                     var car = carForm.Car;
@@ -133,7 +134,7 @@ namespace CarMechanic
 
         private void AddRepair_Click(object sender, RoutedEventArgs e)
         {
-            var repairForm = new RepairForm.RepairForm(new Repair());
+            var repairForm = new RepairForm.RepairForm(new Repair(), new ObservableCollection<Car>(_context.Cars.ToList()), new ObservableCollection<Part>(_context.Parts.ToList()));
             if (repairForm.ShowDialog() == true)
             {
                 var repair = repairForm.Repair;
@@ -160,11 +161,10 @@ namespace CarMechanic
         {
             if (RepairsListBox.SelectedItem is Repair selectedRepair)
             {
-                var repairForm = new RepairForm.RepairForm(selectedRepair);
+                var repairForm = new RepairForm.RepairForm(selectedRepair, new ObservableCollection<Car>(_context.Cars.ToList()), new ObservableCollection<Part>(_context.Parts.ToList()));
                 if (repairForm.ShowDialog() == true)
                 {
                     var repair = repairForm.Repair;
-
                     if (repair.Car != null)
                     {
                         var existingCar = _context.Cars.Find(repair.Car.Id);
@@ -178,29 +178,6 @@ namespace CarMechanic
                             _context.Cars.Attach(repair.Car);
                         }
                     }
-
-                    // Odłączenie istniejących części
-                    foreach (var part in repair.Parts)
-                    {
-                        _context.Entry(part).State = EntityState.Detached;
-                    }
-
-                    // Dodanie nowych części
-                    repair.Parts.Clear();
-                    foreach (var part in repairForm.Repair.Parts)
-                    {
-                        var existingPart = _context.Parts.Find(part.Id);
-                        if (existingPart != null)
-                        {
-                            repair.Parts.Add(existingPart);
-                        }
-                        else
-                        {
-                            _context.Parts.Attach(part);
-                            repair.Parts.Add(part);
-                        }
-                    }
-
                     _context.Entry(repair).State = EntityState.Modified;
                     _context.SaveChanges();
                     LoadData();

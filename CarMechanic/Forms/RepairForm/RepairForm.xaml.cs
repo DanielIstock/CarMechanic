@@ -1,56 +1,32 @@
-﻿using System;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using CarMechanic.Models;
-using CarMechanic.Data;
 
 namespace CarMechanic.RepairForm
 {
     public partial class RepairForm : Window
     {
-        public Repair Repair { get; private set; }
+        public Repair Repair { get; set; }
+        public ObservableCollection<Car> Cars { get; set; }
+        public ObservableCollection<Part> Parts { get; set; }
 
-        private readonly AppDbContext _context;
-
-        public RepairForm(Repair repair)
+        public RepairForm(Repair repair, ObservableCollection<Car> cars, ObservableCollection<Part> parts)
         {
             InitializeComponent();
-            _context = new AppDbContext();
             Repair = repair;
-            DataContext = Repair;
-
-            CarComboBox.ItemsSource = _context.Cars.ToList();
-            PartsListBox.ItemsSource = _context.Parts.ToList();
-
-            CarComboBox.SelectedItem = Repair.Car;
-
-            foreach (var part in Repair.Parts)
-            {
-                PartsListBox.SelectedItems.Add(part);
-            }
+            Cars = cars;
+            Parts = parts;
+            DataContext = this;
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (CarComboBox.SelectedItem is Car selectedCar)
-            {
-                Repair.Car = selectedCar;
-            }
-
-            Repair.Parts.Clear();
-            foreach (var part in PartsListBox.SelectedItems)
-            {
-                Repair.Parts.Add((Part)part);
-            }
-
+            Repair.Date = DatePicker.SelectedDate ?? Repair.Date;
+            Repair.Description = DescriptionTextBox.Text;
+            Repair.Car = (Car)CarComboBox.SelectedItem;
+            Repair.Parts = PartsListBox.SelectedItems.Cast<Part>().ToList();
             DialogResult = true;
-            Close();
-        }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = false;
-            Close();
         }
     }
 }

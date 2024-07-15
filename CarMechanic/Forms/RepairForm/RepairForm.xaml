@@ -1,23 +1,18 @@
 <Window x:Class="CarMechanic.RepairForm.RepairForm"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="RepairForm" Height="400" Width="300">
+        Title="RepairForm" Height="400" Width="400">
     <Grid>
         <StackPanel>
-            <Label Content="Car:" />
-            <ComboBox x:Name="CarComboBox" DisplayMemberPath="Model" SelectedValuePath="Id" />
-
-            <Label Content="Date:" />
-            <DatePicker SelectedDate="{Binding Date}" />
-
-            <Label Content="Description:" />
-            <TextBox Text="{Binding Description}" />
-
-            <Label Content="Parts:" />
-            <ListBox x:Name="PartsListBox" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionMode="Extended" />
-
-            <Button Content="Save" Click="SaveButton_Click" />
-            <Button Content="Cancel" Click="CancelButton_Click" />
+            <Label Content="Date:"/>
+            <DatePicker Name="DatePicker" SelectedDate="{Binding RepairDate}" Margin="0,0,0,10"/>
+            <Label Content="Description:"/>
+            <TextBox Name="DescriptionTextBox" Text="{Binding Description}" Margin="0,0,0,10"/>
+            <Label Content="Car:"/>
+            <ComboBox Name="CarComboBox" ItemsSource="{Binding Cars}" DisplayMemberPath="Model" SelectedItem="{Binding Car}" Margin="0,0,0,10"/>
+            <Label Content="Parts:"/>
+            <ListBox Name="PartsListBox" ItemsSource="{Binding Parts}" DisplayMemberPath="Name" SelectionMode="Multiple" Margin="0,0,0,10"/>
+            <Button Content="Save" HorizontalAlignment="Center" VerticalAlignment="Bottom" Click="SaveButton_Click" Width="100" Height="30" Margin="0,20,0,0"/>
         </StackPanel>
     </Grid>
 </Window>
