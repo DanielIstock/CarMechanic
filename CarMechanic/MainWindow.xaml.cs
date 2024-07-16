@@ -11,10 +11,16 @@ using CarMechanic.PartForm;
 
 namespace CarMechanic
 {
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
     public partial class MainWindow : Window
     {
         private readonly AppDbContext _context;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainWindow"/> class.
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
@@ -24,6 +30,9 @@ namespace CarMechanic
             LoadData();
         }
 
+        /// <summary>
+        /// Loads data from the database into the UI.
+        /// </summary>
         private void LoadData()
         {
             UsersListBox.ItemsSource = new ObservableCollection<User>(_context.Users.Include(u => u.Cars).ToList());
@@ -32,6 +41,9 @@ namespace CarMechanic
             PartsListBox.ItemsSource = new ObservableCollection<Part>(_context.Parts.ToList());
         }
 
+        /// <summary>
+        /// Handles the Click event of the AddUser button, showing a form to add a new user.
+        /// </summary>
         private void AddUser_Click(object sender, RoutedEventArgs e)
         {
             var userForm = new UserForm.UserForm(new User());
@@ -44,6 +56,9 @@ namespace CarMechanic
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the EditUser button, showing a form to edit the selected user.
+        /// </summary>
         private void EditUser_Click(object sender, RoutedEventArgs e)
         {
             if (UsersListBox.SelectedItem is User selectedUser)
@@ -59,6 +74,9 @@ namespace CarMechanic
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the DeleteUser button, deleting the selected user.
+        /// </summary>
         private void DeleteUser_Click(object sender, RoutedEventArgs e)
         {
             if (UsersListBox.SelectedItem is User selectedUser)
@@ -69,6 +87,9 @@ namespace CarMechanic
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the AddCar button, showing a form to add a new car.
+        /// </summary>
         private void AddCar_Click(object sender, RoutedEventArgs e)
         {
             var carForm = new CarForm.CarForm(new Car(), new ObservableCollection<User>(_context.Users.ToList()));
@@ -94,6 +115,9 @@ namespace CarMechanic
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the EditCar button, showing a form to edit the selected car.
+        /// </summary>
         private void EditCar_Click(object sender, RoutedEventArgs e)
         {
             if (CarsListBox.SelectedItem is Car selectedCar)
@@ -122,6 +146,9 @@ namespace CarMechanic
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the DeleteCar button, deleting the selected car.
+        /// </summary>
         private void DeleteCar_Click(object sender, RoutedEventArgs e)
         {
             if (CarsListBox.SelectedItem is Car selectedCar)
@@ -132,6 +159,9 @@ namespace CarMechanic
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the AddRepair button, showing a form to add a new repair.
+        /// </summary>
         private void AddRepair_Click(object sender, RoutedEventArgs e)
         {
             var repairForm = new RepairForm.RepairForm(new Repair(), new ObservableCollection<Car>(_context.Cars.ToList()), new ObservableCollection<Part>(_context.Parts.ToList()));
@@ -157,6 +187,9 @@ namespace CarMechanic
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the EditRepair button, showing a form to edit the selected repair.
+        /// </summary>
         private void EditRepair_Click(object sender, RoutedEventArgs e)
         {
             if (RepairsListBox.SelectedItem is Repair selectedRepair)
@@ -185,6 +218,9 @@ namespace CarMechanic
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the DeleteRepair button, deleting the selected repair.
+        /// </summary>
         private void DeleteRepair_Click(object sender, RoutedEventArgs e)
         {
             if (RepairsListBox.SelectedItem is Repair selectedRepair)
@@ -195,6 +231,9 @@ namespace CarMechanic
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the AddPart button, showing a form to add a new part.
+        /// </summary>
         private void AddPart_Click(object sender, RoutedEventArgs e)
         {
             var partForm = new PartForm.PartForm(new Part());
@@ -207,6 +246,9 @@ namespace CarMechanic
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the EditPart button, showing a form to edit the selected part.
+        /// </summary>
         private void EditPart_Click(object sender, RoutedEventArgs e)
         {
             if (PartsListBox.SelectedItem is Part selectedPart)
@@ -222,6 +264,9 @@ namespace CarMechanic
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the DeletePart button, deleting the selected part.
+        /// </summary>
         private void DeletePart_Click(object sender, RoutedEventArgs e)
         {
             if (PartsListBox.SelectedItem is Part selectedPart)
@@ -232,6 +277,9 @@ namespace CarMechanic
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the UserDetails button, showing the details of the selected user.
+        /// </summary>
         private void UserDetails_Click(object sender, RoutedEventArgs e)
         {
             if (UsersListBox.SelectedItem is User selectedUser)
@@ -241,6 +289,9 @@ namespace CarMechanic
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the CarDetails button, showing the details of the selected car.
+        /// </summary>
         private void CarDetails_Click(object sender, RoutedEventArgs e)
         {
             if (CarsListBox.SelectedItem is Car selectedCar)
@@ -250,6 +301,9 @@ namespace CarMechanic
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the RepairDetails button, showing the details of the selected repair.
+        /// </summary>
         private void RepairDetails_Click(object sender, RoutedEventArgs e)
         {
             if (RepairsListBox.SelectedItem is Repair selectedRepair)
@@ -259,6 +313,9 @@ namespace CarMechanic
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the PartDetails button, showing the details of the selected part.
+        /// </summary>
         private void PartDetails_Click(object sender, RoutedEventArgs e)
         {
             if (PartsListBox.SelectedItem is Part selectedPart)

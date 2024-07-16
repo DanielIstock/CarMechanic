@@ -5,18 +5,44 @@ using System.Linq;
 
 namespace CarMechanic.Data
 {
+    /// <summary>
+    /// Represents the database context for the CarMechanic application.
+    /// </summary>
     public class AppDbContext : DbContext
     {
+        /// <summary>
+        /// Gets or sets the Users table in the database.
+        /// </summary>
         public DbSet<User> Users { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Cars table in the database.
+        /// </summary>
         public DbSet<Car> Cars { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Repairs table in the database.
+        /// </summary>
         public DbSet<Repair> Repairs { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Parts table in the database.
+        /// </summary>
         public DbSet<Part> Parts { get; set; }
 
+        /// <summary>
+        /// Configures the database connection and other options.
+        /// </summary>
+        /// <param name="optionsBuilder">The options builder used to configure the context.</param>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Data Source=CarMechanicDatabase.db");
         }
 
+        /// <summary>
+        /// Configures the model for the context.
+        /// </summary>
+        /// <param name="modelBuilder">The builder used to construct the model for this context.</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()
@@ -37,6 +63,9 @@ namespace CarMechanic.Data
             base.OnModelCreating(modelBuilder);
         }
 
+        /// <summary>
+        /// Seeds the database with initial data if it is empty.
+        /// </summary>
         public void Seed()
         {
             Console.WriteLine("Checking if seeding is needed...");
