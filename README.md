@@ -1,4 +1,5 @@
 Opis Projektu
+
 CarMechanic to aplikacja desktopowa stworzona w technologii WPF (Windows Presentation Foundation) z wykorzystaniem Entity Framework Core do zarządzania bazą danych SQLite. Aplikacja pozwala na zarządzanie użytkownikami, samochodami, naprawami oraz częściami. Główne funkcje aplikacji obejmują dodawanie, edytowanie, usuwanie i przeglądanie danych.
 
 Technologie
@@ -62,9 +63,15 @@ Przeglądanie Szczegółów Części: Wyświetla szczegółowe informacje o wybr
 Struktura Projektu
 
 CarMechanic: Główna przestrzeń nazw zawierająca logikę aplikacji.
+
 CarMechanic.Data: Zawiera kontekst bazy danych oraz konfiguracje modeli Entity Framework Core.
+
 CarMechanic.Models: Definiuje modele danych, takie jak User, Car, Repair, Part.
+
 CarMechanic.UserForm: Formularze i okna dialogowe związane z użytkownikami.
+
 CarMechanic.CarForm: Formularze i okna dialogowe związane z samochodami.
+
 CarMechanic.RepairForm: Formularze i okna dialogowe związane z naprawami.
+
 CarMechanic.PartForm: Formularze i okna dialogowe związane z częściami.
